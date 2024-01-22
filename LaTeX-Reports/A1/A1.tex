@@ -1,0 +1,94 @@
+
+\documentclass[12pt]{article}
+\usepackage{graphicx} % for including images
+\usepackage{hyperref} % for creating hyperlinks
+\usepackage{amsmath} % for mathematical expressions
+\usepackage{lipsum} % for generating dummy text
+
+\begin{document}
+% Title page information
+\title{Raspberry Pi 4 Environment Configuration}
+\author{Jaidon Lybbert, University of Washington}
+\date{January 24, 2024}
+
+
+% Generate the title page
+\maketitle
+
+% Abstract section
+\begin{abstract}
+This report documents the setup and configuration of a development environment for a remotely accessed Raspberry Pi 4 on a local WiFi network. The Raspbian-Lite OS is flashed to an SD card using Rufus on a Windows 10 laptop, then the Linux filesystem is directly modified on the SD card to set up SSH and enable connecting to the WiFi network, avoiding the need for a keyboard, mouse or monitor for first time set up.  Before doing any work, I describe my ideal environment based on my preferences, goals for the next 10 weeks, and available tools. Based on my experience, I layout my plan ahead of time and compile the resources I think I will need.
+\end{abstract}
+
+% Introduction section
+\section{Introduction}
+This document is organized as follows. In Section \ref{sec:background} I describe my experience with embedded systems and software, motivations and intent, and take a look at the physical interface to the Raspberry Pi 4. I devise a plan for setting up my preffered environment in Section \ref{sec:methods}, describe what the actual environment ends up looking like in Section \ref{sec:results}, and discuss the failures and hurdles I faced in Section \ref{sec:discussion}. I conclude in \ref{sec:conclusion} by discussing the improvements I would like to make in the future.
+
+% Methods section
+\section{Background}\label{sec:background}
+
+
+\section{Methods}\label{sec:methods}
+A development environment is set up on the device using Neo-vim with language-servers for Python and Rust. A VSCode-based development environment is set up on the Windows 10 machine for instances when a debugger is necessary. Git is installed on both machines for version control
+
+% Results section
+\section{Results}\label{sec:results}
+\lipsum[6-7] % replace with your own text
+
+% Discussion section
+\section{Discussion}\label{sec:discussion}
+\lipsum[8-9] % replace with your own text
+
+% Conclusion section
+\section{Conclusion}\label{sec:conclusion}
+\lipsum[10] % replace with your own text
+
+% References section
+\begin{thebibliography}{9}
+\bibitem{example1} 
+Author A, Author B, and Author C. 
+\textit{Title of the article}. 
+Journal name, volume, issue, pages, year.
+
+\bibitem{example2} 
+Author D, Author E, and Author F. 
+\textit{Title of the book}. 
+Publisher, edition, year.
+\end{thebibliography}
+
+% Acknowledgments section
+\section*{Acknowledgments}
+\lipsum[11] % replace with your own text
+
+% Appendices section
+\appendix
+\section{Appendix A}
+\lipsum[12] % replace with your own text
+
+\section{Appendix B}
+\lipsum[13] % replace with your own text
+
+% Figures and tables section
+\section*{Figures and Tables}
+% Example of including a figure
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{ferris_the_crab.png} % replace with your own image file
+\caption{Example of a figure caption}
+\label{fig:example}
+\end{figure}
+
+% Example of creating a table
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+A & B & C \\ \hline
+1 & 2 & 3 \\ \hline
+4 & 5 & 6 \\ \hline
+\end{tabular}
+\caption{Example of a table caption}
+\label{tab:example}
+\end{table}
+
+\end{document}
