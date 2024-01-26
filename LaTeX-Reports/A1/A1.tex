@@ -24,12 +24,12 @@
 
 % Abstract section
 \begin{abstract}
-This report documents the setup and configuration of a portable development environment for a headless Raspberry Pi 4 on a cellular hotspot. The environment consists of a Windows 10 laptop, iPhone 13 Pro, and Raspberry Pi 4B. The Pi is pre-configured with the SSID and password to connect to the iPhone hotspot, and accessed from the laptop through SSH. The Pi is set up with the Neovim editor for on-device development, with language support for Python, Rust, C, C++, and Zig. For debugger support, the Windows laptop is set up with Visual Studio and VSCode with extensions for the same languages.
+This report documents the setup and configuration of a portable development environment for a headless Raspberry Pi 4. The environment consists of a Windows 10 laptop, iPhone 13 Pro, and Raspberry Pi 4B. The Pi is pre-configured with the SSID and password to connect to the iPhone hotspot, and accessed from the laptop through SSH. A second home WiFi network is added with priority. The Pi is set up with the Neovim editor for on-device development, with language support for Python, Rust, C, C++, and Zig. For debugger support, the Windows laptop is set up with Visual Studio and VSCode with extensions for the same languages.
 \end{abstract}
 
 % Introduction section
 \section{Introduction}
-This document is organized as follows. In Section \ref{sec:background} I describe my experience with embedded systems and software, motivations and intent, and take a look at the physical interface to the Raspberry Pi 4. I devise a plan for setting up my preffered environment in Section \ref{sec:methods}, describe what the actual environment ends up looking like in Section \ref{sec:results}, and discuss the failures and hurdles I faced in Section \ref{sec:discussion}. I conclude in \ref{sec:conclusion} by discussing the improvements I would like to make in the future.
+This document is organized as follows. In Section \ref{sec:background} I describe my experience with embedded systems and software, motivations and intent. I describe the setup of my environment in Section \ref{sec:methods} and perform some benchmarking tests. I show the benchmark results in Section \ref{sec:results}, and discuss the results along with the failures and hurdles I faced in Section \ref{sec:discussion}. I conclude in \ref{sec:conclusion} by discussing the improvements I would like to make in the future.
 
 % Methods section
 \section{Background}\label{sec:background}
@@ -145,10 +145,57 @@ I went the easy route and just downloaded the released binary for the aarch64 ar
 
 \begin{lstlisting}
 wget https://ziglang.org/builds/zig-linux-aarch64-0.12.0-dev.2338+9d5a133f1.tar.xz 
+tar -xf zig-linux-aarch64-0.12.0-dev.2338+9d5a133f1.tar.xz
+\end{lstlisting}
+
+And added Zig to my PATH variable permanently by opening the bash configuration with Neovim.
+
+\begin{lstlisting}
+nvim ~/.bashrc
+\end{lstlisting}
+
+Then pasting in the following, to append the PATH environment variable.
+
+\begin{lstlisting}
+export PATH=$PATH:/home/clusterpi/zig/zig-linux-aarch64-0.12.0-dev.2338+9d5a133f1
 \end{lstlisting}
 
 \subsubsection{Neovim Setup on Device}
-A development environment is set up on the device using Neovim with language support for Python, Rust, C, C++, and Zig. By default, Neovim supports syntax highlighting for these languages, for code completion and static analysis, language-specific plugins are added. 
+A development environment is set up on the device using Neovim with language support for Python, Rust, C, C++, and Zig. By default, Neovim supports syntax highlighting for these languages. For code completion, linting, and static analysis, language-specific plugins are added. Neovim supports the Lua scripting language for writing plugins and configuration. 
+
+To get a configuration quickly, I used the kickstart-nvim Github repository\cite{kickstart}, which requires the latest version of Neovim, \textit{not} the version found in the default package repositories on the Pi. I uninstalled the old version of Neovim, and compiled the latest version of Neovim from source.
+
+\begin{lstlisting}
+sudo apt uninstall neovim
+git clone https://github.com/neovim/neovim
+cd neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo
+sudo make install
+\end{lstlisting}
+
+Neovim took a reasonable 10 minutes or so to compile. I then followed the kickstart-nvim instructions.
+
+\begin{lstlisting}
+mkdir ~/.config/nvim
+git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+\end{lstlisting}
+
+Starting Neovim runs the configuration script, and downloads about 25 plugins greatly extending the functionality. I used the \verb|:meson| command in Neovim to search and install language servers for Python, Rust, and Zig as shown in Figure \ref{fig:language_servers}. The popular language server for C and C++ is \verb|clangd| which unfortunately did not install successfully on the Pi. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1.0\textwidth]{language-servers.png} % replace with your own image file
+\caption{Language servers installed through the Mason package manager in Neovim.}
+\label{fig:language_servers}
+\end{figure}
+
+As an example, some of the power of the Rust Analyzer is demonstrated in Figure \ref{fig:rust_analyzer}. After typing "ab" on a line of the Rust application in the Neovim editor, the language server guesses that you are typing "abort" and gives you information about how the function works, and gives the option to autocomplete.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1.0\textwidth]{rust-analyzer.png} % replace with your own image file
+\caption{The Rust Analyzer providing context and autocompletion in the Neovim editor running on the Raspberry Pi accessed through SSH.}
+\label{fig:rust_analyzer}
+\end{figure}
 
 \subsubsection{VSCode} A VSCode-based development environment is set up on the Windows 10 machine for instances when a debugger is necessary, with extensions for Python, Rust, and Zig. These extensions add syntax highlighting, language servers, and linting to VSCode.
 \begin{itemize}
@@ -210,12 +257,21 @@ cmake --build .
 The project compiled with GCC and ran without issue.
 
 \begin{lstlisting}
-./Debug/HelloWorld
+./HelloWorld
 \end{lstlisting}
 
 I repeated the CMake build process on my Windows machine, and verified the build worked correctly with MSBuild.
 
 \paragraph{Zig}
+When you initialize a new project in Zig, some test code is created to print out a message. All that is needed is the following.
+
+\begin{lstlisting}
+cd hello_zig
+zig init
+zig build run
+\end{lstlisting}
+
+The test code prints \textit{All your codebase are belong to us.}
 
 \subsubsection{Debugger Test}
 I opened the ./src/ folder of my repository in VSCode on my Windows machine and set a breakpoint at the first line of each "hello world" program for Python, Rust, and Zig. I verified that the debugger was working for each one. For C, I opened the built project in Visual Studio, set a breakpoint and ran the project in Debug mode to verify the debugger was working.
@@ -234,7 +290,7 @@ I downloaded the \verb|.zip| file from our class Canvas page to the repository o
 I extracted the folder.
 
 \begin{lstlisting}
-extract ee_course.zip
+unzip ee_course.zip
 \end{lstlisting}
 
 I ran the shell script without changes to see the output.
@@ -248,8 +304,7 @@ Following the guide in the assignment instructions I opened the \verb|prototype.
 \begin{lstlisting}
 cat /proc/cpuinfo
 \end{lstlisting}
-
-To the \verb|g_core| struct.
+to the \verb|g_core| struct.
 
 \begin{figure}[h]
 \centering
@@ -294,7 +349,7 @@ Figure \ref{fig:plot_memlib} shows the correlation of time, temperature, and ene
 
 Figure \ref{fig:plot_memsys} shows the difference in execution time that optimizing memory access patterns can make. By "working with the memory system" total execution time can be dramatically reduced. 
 
-Figure \ref{fig:plot_tests} shows execution time compared the number of tests performed. In this one, changing the y-axis scaling would improve readability. The obvious takeaway is that more tests take more time. 
+Figure \ref{fig:plot_time} shows execution time compared the number of tests performed. In this one, changing the y-axis scaling would improve readability. The obvious takeaway is that more tests take more time. 
 
 \subsection{Issues Encountered}
 \subsubsection{Initializing WiFi}
@@ -307,7 +362,10 @@ Compiling Zig turned out to be more computationally intensive than I expected, a
 \section{Conclusion}\label{sec:conclusion}
 The result of this work is a headless Raspberry Pi set up with prioritized WiFi connections to a mobile hotspot, and my home network. I am able to edit code with syntax highlighting, code completion, and "peak definition"-type functions using a modified configuration of Neovim on the device through an SSH connection. My code is synced to GitHub, and I am able to transfer and step-debug code on my Windows machine. Python, Rust, Zig, C, and C++ are supported by the environment.
 
-I fell short of being able to do on-device debugging. This could become a problem if I start programming using significant device-specific code. In the future, I would like to explore using GDB directly through the shell for some basic debug functionality, and explore other options for dumping memory regions for analysis.
+I fell short of being able to do on-device debugging. This could become a problem if I start programming using significant device-specific code. In the future, I would like to explore using GDB directly through the shell for some basic debug functionality, and explore other options for dumping memory regions for analysis. I also noticed that there are plugins for Neovim supporting some debugging for some languages, which I will explore further. I saw with \verb|clangd| that not all plugins are available on the Raspberry Pi.
+
+\paragraph{Note}
+\textit{All my code and project files for this and future reports, can be found on my GitHub repository \cite{lybbert2024classwork}.}
 
 % Bibliography from refs.bib
 \bibliographystyle{plain}
