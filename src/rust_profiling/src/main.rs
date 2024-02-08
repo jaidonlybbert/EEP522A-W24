@@ -7,8 +7,8 @@ fn main() {
     println!("Performing Naive CPU GEMM");
 
     benchmark_gemm_compute_bound();
-    benchmark_gemm_memory_bound();
-    benchmark_matrix_add_cpu();
+    //benchmark_gemm_memory_bound();
+    //benchmark_matrix_add_cpu();
     benchmark_tiled_gemm_cpu();
 }
 
@@ -19,7 +19,7 @@ fn benchmark_tiled_gemm_cpu() {
     writeln!(file, "Matrix Size,Execution Time").unwrap();
 
     // Iterate over matrix sizes from 10x10 to 1000x1000
-    for size in (16..=400).step_by(16) {
+    for size in (16..=200).step_by(16) {
         let time = measure_tiled_gemm(size, size, size).as_millis();
         println!("Size: {}x{}, Time: {} ms", size, size, time);
         writeln!(file, "{},{}", size, time).unwrap();
@@ -70,7 +70,7 @@ fn benchmark_gemm_compute_bound() {
     writeln!(file, "Matrix Size,Execution Time").unwrap();
 
     // Iterate over matrix sizes from 10x10 to 1000x1000
-    for size in (16..=400).step_by(16) {
+    for size in (16..=200).step_by(16) {
         let time = measure_gemm(size, size, size).as_millis();
         println!("Size: {}x{}, Time: {} ms", size, size, time);
         writeln!(file, "{},{}", size, time).unwrap();

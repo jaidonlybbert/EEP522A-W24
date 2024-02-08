@@ -1,19 +1,54 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
+import time
+
+
+def numpy_gemm(max_size):
+    iterations = int(max_size / 16)
+    sizes = [x*16 for x in range(1, iterations)]
+    times = []
+    for n in sizes:
+        times.append(test_gemm(n))
+    data = {'Matrix Size': sizes, 'Execution Time': times}
+    print(data)
+    return data
+
+
+def plot_numpy_gemm():
+    data = numpy_gemm(2000)
+    plt.figure(figsize=(10, 6))
+    plt.plot(data['Matrix Size'], data['Execution Time'], color='red', label="Numpy")
+    plt.title('CPU Numpy GEMM Performance')
+    plt.xlabel('Matrix Size')
+    plt.ylabel('Execution Time (ms)')
+    plt.savefig('gemm_numpy.png')
+
+def test_gemm(n):
+    a = np.random.rand(n, n)
+    b = np.random.rand(n, n)
+    start = time.perf_counter()
+    c = a @ b
+    end = time.perf_counter()
+    return (end - start) * 1E3
+
 
 def plot_csvs(file1, file2):
     # Read the CSV files
     data1 = pd.read_csv(file1)
     data2 = pd.read_csv(file2)
+    data3 = numpy_gemm(200)
 
     # Create the scatter plots
     plt.figure(figsize=(10, 6))
-    plt.scatter(data1['Matrix Size'], data1['Execution Time'], color='blue', label=file1)
-    plt.scatter(data2['Matrix Size'], data2['Execution Time'], color='red', label=file2)
-    plt.title('Execution Time Comparison')
+    plt.plot(data1['Matrix Size'], data1['Execution Time'], color='blue', label=file1)
+    plt.plot(data2['Matrix Size'], data2['Execution Time'], color='red', label=file2)
+    plt.plot(data3['Matrix Size'], data3['Execution Time'], color='red', label="Numpy")
+    plt.title('CPU GEMM Execution Time Comparison')
     plt.xlabel('Matrix Size')
     plt.ylabel('Execution Time (ms)')
     plt.legend()
+    plt.savefig('gemm.png')
 
 def plot_compute_bound():
     # Read the CSV file
@@ -64,9 +99,10 @@ def plot_memory_bound():
 
 
 if __name__ == "__main__":
-    plot_compute_bound()
-    plot_memory_bound()
-    plot_matrix_add()
-    plot_tiled_gemm_cpu()
+    #plot_compute_bound()
+    #plot_memory_bound()
+    #plot_matrix_add()
+    #plot_tiled_gemm_cpu()
     plot_csvs("gemm_benchmark.csv", "tiled_gemm_benchmark.csv")
+    plot_numpy_gemm()
     plt.show()
