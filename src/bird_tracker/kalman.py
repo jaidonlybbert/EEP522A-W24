@@ -191,4 +191,4 @@ if __name__ == "__main__":
     peak_samples_idx = peak_detect(samples)
     split_windows(2**14, peak_samples_idx)
     bird_sound_generate()
-    #plot_samples(samples, sample_rate, resolution)
+    plot_samples(samples, sample_rate, resolution)
