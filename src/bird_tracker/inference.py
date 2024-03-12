@@ -4,6 +4,7 @@ import math
 import operator
 import os
 from parse_audio import read_mp3
+import time
 
 
 userDir = os.path.expanduser('~')
@@ -11,20 +12,20 @@ model = "BirdNET_6K_GLOBAL_MODEL"
 sf_thresh = 0.03
 
 
-def splitSignal(sig, rate, overlap, seconds=6.0, minlen=1.5):
+def splitSignal(sig, rate, overlap_samples, length_samples):
 
     # Split signal with overlap
     sig_splits = []
-    for i in range(0, len(sig), int((seconds - overlap) * rate)):
-        split = sig[i:i + int(seconds * rate)]
+    for i in range(0, len(sig), length_samples - overlap_samples):
+        split = sig[i:i + length_samples]
 
         # End of signal?
-        if len(split) < int(minlen * rate):
+        if len(split) < length_samples * 0.75:
             break
 
         # Signal chunk too short? Fill with zeros.
-        if len(split) < int(rate * seconds):
-            temp = np.zeros((int(rate * seconds)))
+        if len(split) < length_samples:
+            temp = np.zeros(length_samples)
             temp[:len(split)] = split
             split = temp
 
@@ -56,8 +57,8 @@ def convertMetadata(m):
 
 
 def predict(sample, sensitivity):
-    print(sample[0].shape)
-    print(sample[1].shape)
+    # print(sample[0].shape)
+    # print(sample[1].shape)
     global INTERPRETER
     # Make a prediction
     INTERPRETER.set_tensor(INPUT_LAYER_INDEX, np.array(sample[0], dtype='float32'))
@@ -81,22 +82,30 @@ def predict(sample, sensitivity):
 def inference():
     global INTERPRETER, INCLUDE_LIST, EXCLUDE_LIST
     INTERPRETER = loadModel()
-    lon, lat = (122.30096333, 47.67300667)  # gps_parse.getPositionData()
+    lon, lat = (149.960695, 71.511299)  # gps_parse.getPositionData()
     week = 10
     # Convert and prepare metadata
     mdata = convertMetadata(np.array([lat, lon, week]))
     mdata = np.expand_dims(mdata, 0)
     sensitivity = 1.0  # range 0.5 to 1.5
 
-    samples, sample_rate, resolution = read_mp3("../../data/birds.mp3")
+    samples, sample_rate, resolution = read_mp3("../../data/calidris_falcinellus.mp3")
 
-    chunks = splitSignal(samples, sample_rate, 0.0)
+    chunks = splitSignal(samples, sample_rate, 0, 144000)
 
-    for c in chunks:
+    inference_timing = []
+    predictions = {}
+
+    for i, c in enumerate(chunks):
         sig = np.expand_dims(c, 0)
 
+        t1 = time.time_ns()
         p = predict([sig, mdata], sensitivity)
-        print("Prediction: ", p[:10])
+        inference_timing.append(time.time_ns() - t1)
+        predictions["chunk " + str(i)] = p[:10]
+
+    print("Inference timing (ms): ", [i / 1E6 for i in inference_timing])
+    print(predictions)
 
 
 def loadModel():
