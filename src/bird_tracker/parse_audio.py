@@ -14,4 +14,4 @@ def read_mp3(file_path) -> np.array:
 
 
 if __name__ == "__main__":
-    read_mp3("../../data/birds.mp3")
+    read_mp3("../../data/calidris_falcinellus.mp3")
