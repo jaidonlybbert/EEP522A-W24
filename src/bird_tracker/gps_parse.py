@@ -18,6 +18,7 @@ def getPositionData():
             if report['class'] == 'TPV':
                 latitude = getattr(report, 'lat', "Unknown")
                 longitude = getattr(report, 'lon', "Unknown")
+                print(report)
                 print("Your position: lon = " +
                       str(longitude) + ", lat = " + str(latitude))
                 positions.append((longitude, latitude))
