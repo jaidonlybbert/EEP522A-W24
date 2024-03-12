@@ -2,7 +2,7 @@ from gps import gps, WATCH_ENABLE, WATCH_NEWSTYLE
 
 
 def getPositionData():
-    session = gps("localhost", "2947")
+    session = gps(mode=WATCH_ENABLE)
     session.stream(WATCH_ENABLE | WATCH_NEWSTYLE)
 
     while True:
