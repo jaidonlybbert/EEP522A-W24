@@ -101,9 +101,25 @@ Once I had a reliable connection, I wrote a Python script to collect about 1200 
 	To characterize the microphone noise, I tape over the transducer, then sample the ADC with the ESP8266, and send the samples over to the Raspberry Pi through the web socket interface. I record the samples to a \textbf{CSV} to plot the sample distribution.
 
 \subsection{ESP8266}
-	Each acoustic sensing node is implemented as ESP8266 MCU which connects to a common WiFi network and communicates with the Raspberry Pi through web sockets. For my prototype, the ESP8266 is connected to my home router. The EEPROM of the ESP8266 is flashed with the MicroPython runtime through a micro-USB cable connected to my laptop. Configuration of the ESP8266 is done through the read-evaluate-print-loop (REPL) accessed through a serial port using PuTTY with the correct baud rate. MicroPython automaticlly executes the \textbf{boot.py} script in the MicroPython filesystem when the device is powered on. The wireless connection to the router is configured in this Python script,  
+	Each acoustic sensing node is implemented as an Adafruit Feather HUZZAH ESP8266 MCU which connects to a common WiFi network and communicates with the Raspberry Pi through web sockets. For my prototype, the ESP8266 is connected to my home router. 
+	The EEPROM of the ESP8266 is flashed with the MicroPython runtime through a micro-USB cable connected to my laptop using the \textbf{esptool} CLI. Configuration of the ESP8266 can be done through the read-evaluate-print-loop (REPL) accessed through a serial port using PuTTY. MicroPython automatically executes the \textbf{boot.py} script in the ESP filesystem when the device is powered on, then executes \textbf{main.py}.
+	In order to edit the scripts on the ESP8266, I use the \textbf{Ampy} command line tool created by Adafruit to modify the filesystem over the serial port. Ampy can be installed through \textbf{pip}, then commands can be issued to copy files over by specifying the serial port.
+	I wrote a script \textbf{server.py} which is loaded onto the ESP. The script opens a web socket and listens for a connection from the Raspberry Pi, which . When the connection is made, the ESP begins sampling the ADC and stores the samples into a buffer. The buffer is sent over the connection to be recieved by the Raspberry Pi.
+
 
 \subsection{Simulator}
+	The effectiveness of localization based on acoustic signals depends on factors including:
+	
+\begin{itemize}
+  \item Sensor noise
+  \item Environment noise
+  \item Sampling quantization
+  \item Sensor and source geometry
+  \item Sound speed
+  \item Reverberation
+\end{itemize}
+
+	In order to test my localization algorithm under variation of these parameters, I created a simple simulator in Python to place sensors and sources spatially in the environment, add noise to the signal, simulate the sound propogating from source to each listening sensor, and visualize the resulting hyperbolas of the TDE algorithm and the localization result. The simulator uses the \textbf{Pygame} library to graphically represent the environment.
 	
 
 \subsection{Time-Difference Estimation (TDE)}

@@ -1,35 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import csv
-import math
-from typing import Dict
+from gps_conversion import gps_conv_factors_deg_to_meters
 
 execution_times_ms = [295.003007, 281.53983, 338.305615, 325.040549, 276.625318, 275.907317, 276.118964, 276.593908, 277.049705, 279.82499, 277.82354, 295.58265, 277.58015, 278.061133, 277.494759, 276.666868, 277.371296, 277.491129, 274.572659, 276.148292, 274.78777, 274.143323, 275.323992, 275.466955, 274.718158, 275.258583, 275.261694, 275.607361, 274.560803, 276.589603, 274.760173, 275.297285, 274.633875, 276.336304, 275.136598, 275.856007]
-
-
-def gps_conv_factors_deg_to_meters(degrees_latitude: float) -> Dict:
-	# Compute lengths of degrees at specific latitude
-
-	# Convert latitude to radians
-	lat = math.radians(degrees_latitude)
-
-	# Set up "Constants"
-	m1 = 111132.92		# latitude calculation term 1
-	m2 = -559.82		# latitude calculation term 2
-	m3 = 1.175			# latitude calculation term 3
-	m4 = -0.0023		# latitude calculation term 4
-	p1 = 111412.84		# longitude calculation term 1
-	p2 = -93.5			# longitude calculation term 2
-	p3 = 0.118			# longitude calculation term 3
-
-	# Calculate the length of a degree of latitude and longitude in meters
-	latlen = m1 + (m2 * math.cos(2 * lat)) + (m3 * math.cos(4 * lat)) +\
-		(m4 * math.cos(6 * lat))
-
-	longlen = (p1 * math.cos(lat)) + (p2 * math.cos(3 * lat)) +\
-		(p3 * math.cos(5 * lat))
-
-	return {"meters_per_degree": {"latitude": latlen, "longitude": longlen}}
 
 
 def plot_inference():
