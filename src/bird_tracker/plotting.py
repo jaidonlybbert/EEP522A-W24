@@ -19,6 +19,38 @@ def plot_inference():
     plt.show()
 
 
+def plot_microphone():
+    mic_readings = []
+    filepath = "./microphone_reading.csv"
+    with open(filepath, 'r') as f:
+        reader = csv.reader(f, delimiter='\t')
+        for row in reader:
+            for reading in row:
+                mic_readings.append(int(reading))
+    print(mic_readings)
+    print("Length: ", len(mic_readings))
+    fig, axs = plt.subplots(1, 1, figsize=(6, 3))
+    mean = int(np.floor(np.mean(mic_readings)))
+
+    rng = np.max(mic_readings) - np.min(mic_readings)
+
+    count, bins, patches = axs.hist(mic_readings, bins=rng)
+    ticks = [(patch.get_x() + (patch.get_x() + patch.get_width())) / 2 for patch in patches]
+    # ticklabels = (bins[1:] + bins[:-1]) / 2
+#    ticklabels = np.round((ticklabels - mean), 2)
+    ticklabels = np.floor(bins[:-1] - mean)
+    axs.set_xticks(ticks, ticklabels, rotation=90)
+    axs.set_xlabel('Deviation from Mean (bits)')
+    axs.set_ylabel('Count')
+    axs.set_title('Distribution of Microphone Samples')
+
+    # Adjust spacing between subplots
+    plt.tight_layout()
+
+    # Show the plot
+    plt.show()
+
+
 def plot_gps():
     gps_readings_long_lat = []
     filepath = "./gps_readings.csv"
@@ -62,3 +94,4 @@ def plot_gps():
 
 if __name__ == "__main__":
     plot_gps()
+    plot_microphone()
