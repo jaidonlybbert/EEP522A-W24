@@ -1,0 +1,395 @@
+Camera modules
+- 5MP in 2013 to 12MP in 2023
+
+Wright's Law
+- Forecasting cost declines as a function of cumulative production
+- for every cum doubling of units, consts fall by a constant percentage
+
+Engineering reality of software
+- hardware, optimization, security, cost reductions, & unsupported software 
+  adds complexity & difficulty
+- with height & abstraction comes instability
+
+Trends of 2024
+- Leverage AI
+- Improve CI/CD
+- Phase out C for C++ & Rust
+- Developer Centric Workflow
+- Moving to Higher Level of Abstraction
+
+Fish learns to pilot a robot
+
+Raspberry pi delidded and topped with peltier element for cooling test
+
+Slide
+- Thread Control Block
+	+ Core registers
+	+ program counter
+	+ status register
+- What happens when an interrupt occurs
+	+ Complete pipeline
+	+ Stop process
+	+ Goto interrupt controller, jump to address of ISR
+- What is interrupt latency
+	+ time to stop process, push context, goto interrupt
+- How do thermals affect a scheduler
+	+ slow down execution
+	+ re-prioritize
+- What is the initialize sequence of raspberry pi?
+	+ Boots off GPU
+	+ runs a bit of code to load bootloader chain
+- How long does it take to initialize a Raspberry Pi 4
+	+ about 1 minute
+- What is ASSERT and why is it important?
+	+ Debugging tool to see if information is correct
+
+Slide 2
+- What is a context-switch
+	+ moving to a new thread
+- Why use user and supervisor mode?
+	+ different privileges
+- What is a round-robin scheduler?
+	+ Gives every thread same priority & amount of time
+
+Semiconductor complexity 1950s-1990s
+- 1-4 transistors "isolated dwelling" 1950s
+- 2,300 transistors "town" 1970s
+- 100k 1980s
+- 1M 1990s
+- 100M 2000s
+- 1B 2010s
+- 7B 2018 - dark silicon
+- 1.2T 2019 - wafer level
+
+Next transistions
+- Moving from nanometer to angstrom
+- Coming to an end of shrinking
+
+PDKs
++ rules that transistor processes have to follow
+
+Assignments
+- Working with and working against the memory
+	+ execution time is better working with memory system, more efficient
+- Time to completion compared to energy use
+	+ working against memory produces more heat
+
+Assignment 2
+- Tear apart raspberry pi theoretically
+- characterize, hardware & software
+- use all resources
+- use systematic method
+- formulate set of questions
+- systematically answer questions
+- anser using programs as much as possible
+- provide answers/reasons
+- use as stepping stone
+- decide questions to keep in mind for project
+
+Status
+1. Introduce memory lecture 3 & 4
+2. Assignment 1 - complete
+3. Assignment 2 - released
+
+ALU Alternatives
+- Register-Register
+	+ ADD r2, r0, r1
+- Stack-based
+	+ stack growth adds top of stack
+- Accumulator
+	+ takes operaned from memory and acc. into register
+- register-memory
+	+ takes register operands writes to memory
+
+Fundamentals
+- We can go around the world to get next door but sometimes
+	there are other tools to make the activity simpler
+
+Contents
+- Compute-node
+- hardware assist debug
+- c programming
+...
+
+extern - defined outside file
+const - does not change
+static - only one reference, not local to function
+
+References
+- C: A reference manual
+- ARM system developer's guide
+- writing solid code
+- Jack Ganssle - http://www.ganssle.com
+- Compiler - Principles, Techniques, and Tools
+- Engineering a Compiler
+	+ major book on compilers
+- engineering a compiler
+- modern compiler design
+- Superscalar Microprocessor Design
+	+ great book, written like a philosopher
+	+ out-of-order processor architectures
+	+ brain expanding, very difficult book
+- Gnuplot In Action
+
+Embedded Compiler
+- Conservative "hopefully"
+- limited capability of the target architecture
+- limits of specific C compiler
+- read compiler documentation
+- Oprimize space and time
+
+Processor (50 yeaars progress)
+- Intel 4004
+	+ 740kHz, 2250 transistors
+Fujitsu A64FX
+- 2.2GHz, 8.8B transistors
+
+Implementation of a chip
+- architecture
+	- hardware software contract
+- microarchitecture
+	- hardware design, execution pipeline
+- macrocell
+	- layout implementation
+- implemention
+	- physical chip
+
+Geometry shrinkage, stabilizing
+
+Things from industry
+- Self doubt
+	+ everyone has it
+- Grit
+	+ just keep going
+- Be a moving duck, not a sitting duck
+	+ go do something, use that time to be productive instead of worrying
+- Happiest day is when you don't want to be promoted
+	+ at some point ou will be asked to do things you don't want to do
+
+Future of transistors graph
+
+Raspberry pi NM geometry reduction
+- pi1 65nm -> pi 2/3 40nm -> 4 28nm -> 5 16nm
+
+Moore's Law
+- number of transistors doubling every 24 months
+
+Dennard's Scaling
+- Law: as transistors get smaller, power density stays constant
+
+Understanding hardware
+- 3-stage pipeline vs 20-stage pipeline
+
+Processor oddities
+- delayed-execution or delay-branching
+- even though the jump is taken the ADD instruction is executed
+- PC + offset, during instruction execution the PC pointing ahead
+- PC point to where instructions will be fetched
+
+Old Philosophies
+- CISC complex instructions
+- RISC reduced instruction set
+- Today technology is shared CISC includes RISC
+- RISC adopts more hardware support
+
+Processor Parallelism
+- Instruction level parallelism (ILP)
+- Data level parallelism
+	+ Single Inst mult. data (SIMD)
+	+ multiple instruction multiple data (MIMD)
+- Thread level parallelism (TLP)
+	+ symmetric multi-processing (SMP) or symmetric multi-threading (SMT)
+	+ SMP multiple processors for multiple threads
+	+ SMT one processor multiple threads
+- Virtual Level Parallelism
+	- multiple guest OSes
+
+Pipelines
+- Scalar - in-order processors
+	- common for embedded
+- superscalar - out of order processors
+	- common for high performance embedded systems
+- superpipelined
+	- rare may see these some day
+- very long instruction width (VLIW)
+
+Raspberry pi 3 is in-order
+Raspberry pi 4,5 is out-of-order
+
+What is average instruction length of an instruction run before a branch?
+- About 4-5
+
+Optimization
+- Understanding code is major step
+- identify bottlenecks and redundant code
+- looking at design can identify
+- Paul Level Lecturer in embedded
+	+ "nearly all software problems are attributed to teh design"
+C compiler
+- Compiler can be better at optimization than a skilled engineer
+- They tie you to a toolchain - less portable
+- can provide "magic" solutions which provide problem obscuration
+
+How do we identify bottlenecks in our code?
+- Probes
+	+ Oscilloscope
+	+ JTAG Debug
+		+ breakpoints, look at memory, program flash memory & fpgas
+	+ Logic Analyzer
+		+ fundamental for low level debug
+		+ check protocols I2c, I2S, USB, UART
+		+ Saleae Logic 8/16
+	+ Trace Hardware
+		+ Profiles code, capture code flow with time
+		+ data compressed, branches and time record
+		+ profiles in real processor time
+		+ allows back-in-time debugging
+		+ used for code optimization
+		+ IAR Trace
+
+Profiling
+	+ Analyzing the program to determine how it spends time
+	+ GNU gprof output 
+Hardware Trace
+	+ High speed memory, high density connector
+Modern debuggers
+	+ can take the instruction and data trace information and can go back in time
+	+ programmer can step backwards in time
+	+ runs program in reverse
+	- relatively new tech
+What level of trace does the Broadcom SoC have?
+	+ None
+
+C Language
+	+ Pointers 
+		+ powerful and dangerous
+		+ no safe guides
+		+ fundamental for dynamic memory
+	+ Pointer to Function call
+		+ Useful in tables calls
+	+ Main() function is special, start of c program
+
+Remember to set pins at startup
+
+How is volatile keyword used in 'C'?
+- Tells the compiler that somethings else may change a value
+
+C Compilers
+- Optimization Analysis
+	+ 4 levels, benchmark to see 
+- compiler anatomy
+	+ source code
+	+ front end - lexical & syntax
+	+ semantic representation
+	+ optimization
+	+ Backend
+
+Possible compiler optimizations
+	+ Common subexpression elimination (CSE)
+		+ reuses subexpressions
+	+ loop invariant motion
+	+ live range splitting
+	+ cross jump elimination
+	+ table driven peepholing
+	+ pragmas
+		- provide a standard comment that has meaning to the compiler
+		- specialized syntax
+		- normally conveys non-essential information
+
+GNU toolchain
+	+ Runs on many platforms
+	+ supports most processor architectures
+	+ modify and build own version
+	+ not the best but a good tool
+	+ tool suite follow format
+		+ <architecture>-<format>-<tool name>
+	+ std tools
+		+ gcc
+		+ ld
+		+ strip
+		...
+
+GCC optimizations
+	+ 0s space optimization
+	+ 0t time optimization
+	+ O1, O2, O3, about 130 optimization types
+		- evolutionary algorithms good for finding things we don't know
+		- got about 3% better than best optimization
+
+Recommendations for compiler optimization
+What is major problem with optimization?
+	+ lose 1-1 machine code and compiled code
+	+ lose debugging capabilities
+Pointer aliasing
+Inline C functions
+	+ Hint to compiler to remove the function call overhead
+Inline assembler in C code
+	+ C doesn't support all features
+	+ memory management
+	+ controlling caches
+	+ software interrupts
+	+ communicating with coprocessors
+
+Porting
+	+ "Compatibility is repeating other peoples mistakes"
+		- David John Wheeler
+	+ What are intrinsic functions in 'C'?
+		+ special functions outside of languages for specific architecture
+	+ Either to a new architecture or new toolchain
+	+ New architecture issues
+		- Floating Point
+		- Datatypes are more efficient on specific architectures
+		- Datatypes that can be missing (signed char)
+		- Endian format
+	+ Toolchains
+		- Architectural extensions
+			- built-in features
+	+ Floating point support
+		- IEEE 754
+		- Optional on embedded
+		- signle precision; 32-bit
+		- double precision; 64-bit
+		- extended precision; 80-bit
+	+ FP comes from a hefty power budget
+	+ Hardware Floating Point Unit
+	+ Little and Big Endianness
+
+ARM processor little or big endian?
+- Predominantly Little Endian
+
+Runtime error checking
+- Assert c macro
+- switched off in release mode
+- unaligned data pointers
+	- x86 supports
+	- early RISC does not
+
+Studying everything you can save
+- MHz, memory, cost, requirements
+
+Memory - Cache & management
+
+Sources slide
+- Computer Architecture, A quantitative approach - bible
+- Unix Systems for Modern Architectures - caches
+
+Optimization - Memory
+- The compute Game
+	+ Making compute infinite does not do much but making either memory or 
+	  commmunication infinite readically changes how we approach future
+	  problems
+- Memory is problem
+- Memory optimization about averages
+- involves size, type and hierarchy
+- near data processing
+	- nearer we can bring data to compute the faster
+	- moving compute and programs is better than moving data
+		+ most of todays systems move data nearer to compute & programs
+- characterization is knowing PLB 
+
+Terminology
+- Performance, throughput
+- Latency
+- Bandwidth
+- Type
+- Hierarchy

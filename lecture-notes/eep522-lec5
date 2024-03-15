@@ -1,0 +1,186 @@
+This week
+- WearPico open source smartwatch
+- Raspberry Pi 5 HAT two NVMe SSDs
+
+Local resources
+- Vetco 2024 Contest
+- TAP Plastics
+
+Manufacturing
+- Prototype to Product : Alan Cohen
+- Harvard Business Review: Project Management Handbook - Antonio Nieto-Rodriguez
+
+Kepler 2016
+- 75M mi from home
+- entered emergency mode, lowest operational mode
+- corrected with a power-cycle
+- uncertain cause
+
+Time 
+- Why so important?
+    + integral to everything
+    + fourth dimension (x, y, z, t)
+    + always goes forward
+- Absolute time vs relative time 
+- Wall clock
+	- 18:19:05
+	- precision comes from atomic clocks
+	- must account for leap years
+- Microsoft Zune confounded by leap year and shuts down
+
+Relative time 
+- Processor cycles, reference off input frequency
+- Two concepts:
+	+ User-cycle-time is time spent in user code
+	+ System-cycle-time is time spent in the kernel
+
+Miscellaneous time 
+- Human interaction: 
+	- 0.25 seconds to visual stimulus
+	- 0.17 second for audio
+	- 0.15 for touch
+- Clock skewing, one place different than another due to scale
+- Drifting: time loses accuracy over time 
+- Unix time: time since 00:00:00 UTC 1 January 1970
+	- overflows will occur at 03:14:08 UTC on Tuesday, 19 Jan 2038
+- Mars has Martian Coordinated Time (MTC) and Mars Sol Date (MSD)
+
+Integrity checking using time 
+- Record time, runtime check
+
+How does the Raspberry Pi put together?
+- high speed bus, low speed bus
+- crossbar
+- circular bus topology
+- mesh topology
+	- can shut down some nodes
+
+Sensors
+- Single sensor
+- Sensor fusion
+- Virtual sensor
+
+Battery chemistries
+
+This week on power management
+
+Device drivers?
+	- Framework
+	- open, close, read, write, ioctrl, init
+	- design: blocking driver, interrupt disable vs interrupt enabled
+	- Service routines controlled by interrupts
+		- operate closely with device driver
+
+Memory Allocation
+	- First fit
+	- Best fit
+	- Worst fit
+
+Memory management design
+	- What is the memory map?
+	- Guard against programming errors?
+	- What address does a process get loaded into memory
+	- How and from where is run-time data collected
+
+supervisor mode
+	- privileged unprotectd mode
+user mode
+	- nonprivileged or protected
+	- no access to the memory page tables (available MMU & MPU)
+
+Memory management
+	- Protect the kernel against rogue applications
+	- Hide the complexity of underlying hardware system
+	- Take a fragmented memory map and make it appear linear
+
+Memory protection and region
+	- Memory protection unit (MPU)
+	- 8-16 or greater
+	- easy to program and manage
+	- process isolation
+	- two types of regions
+		- active region
+		- dormant region
+	- MPU context switch
+	- Details
+		+ hardware enforces memory
+		+ r/w only regions
+		+ limited number of protected regions
+		+ fast, all protection in hardware register
+
+Memory Management Unit
+	- Translation between virtual addressed memory
+	- Context switch MMU (virtual view) vs physical
+	- requirement for protected processes
+	- process isolation
+	- safety
+	- memory table held in memory
+	- unlimited number of protected regions (pages)
+	- virtual memory and demand paging
+	- support independent programs
+
+Virtual Memory (Embedded)
+	- MMU acts as a translator between virtual address from linker, and physical addresses
+	- TLB cache of recent address relocations
+	- Page Table Entry hold individual tables
+	- Relocation register
+	- TLB cache of hot list of index of pages
+
+Page Tables
+	- different levels (L1)
+	- divides 4GB into 1MB
+	- L2 split 1MB space into 4, 8, 16 KB pages
+
+Symmetric Multi-Processing
+	- 2-core SMP
+	- Snoop controller solves 
+		+ start proc 0 and 1 have same data
+			+ if proc 1 updates data, write back to shared mem
+		+ proc 1 keeps stale data
+	- n processors where n > 1
+	- cache coherency
+	- Mezi protocol cache
+	- Spin-locks / semaphores2
+	- Issues, many rtos have to play catch up with hardware
+
+	- as processors increase the more communication is a factor, factor is exponential
+	- overall speed of multiprocessor system is less dependent on node performance
+	- more dependent on actual speed of communication
+
+Direct Memory Access (DMA)
+	- Provides a quick and efficient process for moving blocks of data without cpu
+
+Hypervisor type 1 vs 2
+OS virtualization
+	- Enlightened vs unaware
+	- paravirtualization vs full virtualization
+	- Two levels of translation tables
+
+Containers
+	- lightweight, standalone, executable package
+	- packages all code and dependencies
+	- adds complexity
+
+What virtualization on raspberry pi?
+	- Containers 
+
+Final thoughts
+	- Close connection between caches and memory management
+	- management makes memory contiguous
+
+Power
+	- Asimo robot
+	- Boston dynamics
+
+Power Management
+	- Control systems, medical, solar, storage, cooling sys, motors, transport, monitoring
+	- Moore's law, battery capacity doesn't scale as fast
+	- Safety has become a concern
+	- Low level important role in power management
+	- decision based on memory size, power, performance
+	- power characteristics of an algorithm
+
+Case study:
+	- Portelligent
+	- Power measurement, power on sequence & display backlight
+	- taking a photo, watts vs seconds trace

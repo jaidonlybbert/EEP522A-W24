@@ -1,0 +1,215 @@
+Memory
+	- Bring memory closer to processing tasks
+	- In-memory compute
+	- Near-memory compute
+	- tinyurl.com/ycx2pfn3
+	
+Some new ideas
+	- New transistors
+		- Gate-all-around FETS will replace finFETs
+	- Autodesk Fusion 360
+		- ECAD/MCAD combines mechanical and electrical
+	- OPENBCI
+		- Non-intrusive BCI
+		- openbci.com
+
+Class update
+	1. Cache (this week)
+	2. Memory Management (next week)
+	3. Update on Schedule
+	4. Assignment 1 done
+	5. Assignment 2 due 2/7
+
+Assignment 2
+TA Time 
+
+Celebrating Failure (Astro Teller)
+	- Take a huge problem
+	- Find a radical solution
+	- Discover a breakthrough technology
+	Process
+		- Focus on the difficult parts first
+		- Try to get to No, decide when it is impossible
+		- Move on to next idea
+
+What is weak and strongly ordered memory?
+	- Memory pyramid
+	- Memory hierarchy benchmark
+
+Caches
+	- A conceled place for storage
+	- 40-70% chip is cache
+	- Buffers data into memory which has low fetch-latency
+	Advantage
+		- Improves the average performance of overall system
+		- core executes without waiting for slower memory
+	- Streamlines fetching of data from slow memory
+	Disadvantage
+	- Difficult to determine the execution time of a program
+	- Adds complexity
+	Tanenbaum
+		- "If main memory becomes fast enough caches would instantly disappear from hardware designs"
+	Mechanism
+		- Rely on spatial and temporal locality
+		- Spatial locality
+			- The principle that states that a computer software programs frequency run in small loops
+				of code and repeatedly operate on local sections of data memory"
+	What is algorithmic locality?
+		- Preloads, put it into fast memory
+	Cache optimization
+		- Loop invariant
+		- Optimizing spatial locality
+	ATLAS
+		- Automatically tuned linear algebra software
+	Cache: levels
+		- Core, Level 1, Level 2, Level 3, Main memory
+	Cache: Von Neumann Architecture
+		- Mixed data and instruction in cache -> went out to data and instruction memory
+	Cache: Harvard architecture
+		- Separate instruction and data cache
+		- Instruction Read only
+		- data read/write
+i-cache and d-cache are usually same size, but don't need to be
+
+Memory: Non-protected
+	- wild west
+	- Fixed memory map and  provides little flexibility
+	- found with
+		- memory remapping
+		- programmable peripheral base
+		- memory mirroring
+	- common in mcus
+	- cache - physical addresses
+	- Advantage: simple to implement
+	- Disadvantage: no protection from rogue application
+
+Memory: Protection Unit (MPU)
+	- General
+		- Divides memory map into regions (8, 16, etc) with access rights
+		- cache - physical addresses
+	- Mechanism
+		- regions are handled by hardware registers
+		- access permissions
+	- Ex
+		- kernel
+		- kernel data
+		- application
+		- peripherals
+
+Memory: Management Unit (MMU)
+	- General, most comprehensive
+	- MMU uses translation tables
+	- tables held in memory
+	- relatively slow compared to MPU
+	- translate physical to virtual or vice versa
+	- provide access permisions
+
+	- Core -> MMU -> Main Memory
+
+Caches
+	- VIVT
+	- VIPT most common
+	- PIPT
+
+Cache hardware
+	- cache line
+		- directory store
+		- status
+			- valid/dirty
+		- data
+	
+cache functions
+	- copy data and instruction from memory
+	- hidden from application software
+	- enable/disable switch on or off
+	- clean, force a write, reset, re-establish coherency
+	- flush, invalidate a cache
+
+core address: data index
+core address: set index
+core address: tag
+
+controller:
+	- uses index portion of address to locate cache line
+	- cache miss: goes out to main memory
+	- if hit: uses data from cache
+
+direct-mapped cache
+	- every address in main memory is mapped to single location in cache memory
+
+set associativity
+	- developed to limit thrashing
+	- divided into smaller units called "ways"
+	- for 4-kb cache
+		- 1 way has 256 lines cache of 4 words
+		- 4 way has 64 lines
+
+example of clean and invalidate
+
+Terminology
+	- write-through
+	- write-back
+	- bus watching
+	- snooping
+
+System: cached
+	- write buffer
+		- small fifo
+		- efficient
+	- hit rate = (cache_hit/memory_requests)x100
+	- miss penalty
+
+writethrough
+	- more deterministic
+	- tends to be slow
+
+writeback
+	- you can write to cache without writing to main memory
+
+cache: lockdown
+	- enables an os to load time-critical code and data into the memory and exempt from eviction
+
+improve determinisim
+	- couple SRAM close to core
+
+What is weak and strongly ordered memory?
+	- weakly ordered: ordering of instructions can be out of order
+	- strongly ordered: 
+
+Virtualization
+- 1967 IBM concept in IBM S/360--40 mainframe
+- allow OS to be virtualized
+- embedded goal is to be secure, safe, reliable, and certifiable
+- updates can occur while another system is operating, hot swapped
+	- docker con drone updated mid-air
+virtualization views
+
+books
+- Linkers & loaders
+- Unix sstems for architectures
+
+Memory management
+	- significant effect on performance
+	- increses complexity
+
+What does raspberry pi have?
+	- Memory management unit
+
+Application resolution
+	- main -> display -> printf -> putchar -> kernel
+
+Process (single thread)
+	- code, const code, initialized data, uninitialized data, heap
+
+C program
+	- initialized data, uninitialized data, stack, heap
+
+Non protected or flat, memory protection, memory management
+	- linear address map
+	- example process with threads
+
+design of overlays
+
+Memory allocation
+	- creation of processes and threads is simple, the destroying of processes and threads is complicated
+	- finding memory location large enough to hold process

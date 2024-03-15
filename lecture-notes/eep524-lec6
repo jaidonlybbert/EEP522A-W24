@@ -1,0 +1,255 @@
+Embedded lecture 2/13
+
+Why should we care about Kobayashi Maru?
+- Mythical simulator teaches you how to deal with total failure
+
+An expert is a person who has made all the mistakes that can be made in a very narrow field - Niels Bohr
+
+News:
+- 52Pi NVdigi expansion board for HiFi sound
+- Raspberry Pi breaks Microsoft's Bitlocker & TPM
+- More SPI, I2C, UART ports on Pi than published
+- Raspberry Pi 5: switch ignored for reboot, pins still powered on when shutdown
+
+Trouble with Sensor Interfaces:
+- Integrating sensors into design biggest challenge
+- Meeting budget second
+- Sourcing quality sensors third
+
+Acquiring knowledge:
+- Known unknown, unknown unknowns, known knowns, unknown knowns
+
+Safe-mode and workarounds
+- JPL curiosity, MMU bug in space causing error, PowerPC 750
+- PowerPC 750 was thought to be fully characterized
+- RAD750 radiation hardened
+- 233MHz, 6M transistors
+- Hardware issue, not software, could not be fixed only worked around
+- Took 3 months to workaround problem
+
+Side note:
+- Curiosity had choice of Solar power, MMRTG plutonium battery, stirling engine
+
+Raspberry Pi serial number:
+- Encoding information
+
+Forensic Fault Analysis Case Study:
+- Analysis flow: data collection -> identification -> isolation and theory -> corrective strategy
+			^-----------------|
+- Log file
+	|-> Data abort
+- Find in source code
+- Identify/problem isolation
+- Forcing mode change, then inserting assembly
+- Isolation and theory, by changing cpu mode end up pointing to wrong stack
+
+Status
+- Complete power
+- start reliability
+- Assignment 3 released
+	- Due 3/13
+- Presentations
+	- 3/5, 3/12
+
+How confident are you that the clocks are accurate? 
+
+Presentations
+- Relaxed environment
+- Concept is to share information
+- 10-15 minutes per presentation, strict timing
+- Any style: Powerpoint, talking
+- Must include
+  + Project aim (3) - brief description
+  + Characterization (7) - what you looked at
+  + Interesting discoveries (10)
+
+Interesting Case Study
+- Toyota random acceleration
+  + Andrew beacon hill went with wife and dog to park car, put foot on brake and car accelerated, old bmw
+  + thick carpet got between accelerator and brake
+- Barr's ultimate conclusions were
+  + ETCS source code was of unreasonable quality
+  + Code was defective and contains bugs
+  + code quality metrics predice presence of additional bugs
+  + fail safes are defective and inadequate
+  + Misbehaviors of code
+- Software details
+  + variable mirroring was not always done
+  + Stack overflow, claim only 41% of allocated stack space was being used, but actually 94%
+- MISRA-C rule-violated
+  + Recursion was found
+  + CPU doesn't incorporate memory protection to guard against dangers
+- Not mirrored
+  + RTOS critical internal data structures
+  + TargetThrottleAngle global variable
+- Barr concluded the automaker botched it
+- Missed
+  + calls made via pointers
+  + missed RTOS use during task switchiing
+  + didnt' do run-time stack monitoring
+  + used a non-certified RTOS version, OSEK
+- Unintentional RTOS task shutdown
+- Single bits in memory control each task
+  + Possible corruption due to hw or sw faults
+- "one particular dead task would result in loss of throttle control, and that the driver would have to fully remove foot and reapply brakes"
+
+Anomaly
+- Heisenbug, shanges every time you look at it
+- Mandelbug, complexity is bewildering
+- Bohrbug, highly repeatable but difficult to solve
+- Schrodinbug, when source code is technically wrong but the program produces correct result
+- Von neumann bug, inherent statistical problem only seen after multiple program runs or longer execution runs
+- feynmanbug, complex anomaly with humorous cause, which only people focused on the problem notice
+
+Debug strategy
+- don't panic
+- don't think, act
+- divide and conquer
+- avoid going down mythical path
+- be comfortable
+
+Measurement
+- datx.com
+- DT-9803 usb data collector, enables cost forecasting
+- thinkgeek.com
+- cumulative kilowatt-hour monitor
+
+Profiling
+- National instruments
+
+Power equations
+Dynamic power
+- p = acfv^2
+- c = capacitance
+- v = core voltage
+- f = operating frequency
+- a = activity factor
+	- f and v so closely related, you can say f^3
+Static power
+- p = iv
+- i = leakage current
+- v = voltage
+
+Average power
+- Dynamic + static power
+
+Used to be dynamic power, but leakage power is overtaking
+- Energy = p * t
+
+Programatic measurement
+start = time()
+<some activity>
+taken = time() - start()
+
+energy
+start_recording();
+<activity>
+end_energy_recording();
+
+Categorize
+- Power consumption
+- Software resumption
+- Hardware latency
+
+Active/Normal/Run mode
+- Core and peripherals are running normally
+Idle mode
+- ONly device requires updating, no CPU
+- powered but clocks disabled
+Peripheral state
+- powered and running at full performance
+Stand by (suspend)
+- No computing work
+- Core is in low-leakeage, no clock
+- context preserved
+- execution continues on wakeup
+- peripherals off
+- memory off but may preserve context
+Sleep mode
+- Long term power off
+
+Control methods
+- Power management is all about controlling many system parts
+- Target board control to system wide control
+- MAP
+  * Reduce power modes
+- Monitoring and Control
+  * Determine work load High/Low
+  * Monitoring requires the work load has to be captured, combination of software and hardware
+- Issues
+  * Deterministic behavior in a real time system
+- Frequency reduction
+  * quarter frequency = 75% power savings
+- Capacitance reduction
+  * Microprocessors are large collections of gates
+  * turn off sections
+- Power domains
+  * shut off parts of SoC
+- Thermal management
+  * Power draw -> compute
+  * CPUs get very hot, causes failure/thermal stress, fans are used to cool, lasts longer, caches hot
+
+What causes most problems for hardware? Hot or cold?
+- Cold, we design against heat
+
+Software
+- Phase-locked loop (PLL)
+
+Device driver interface
+- Need to add power control through devices
+
+Semaphores / Spin-locks
+- Semaphore allows you to have critical piece of code, lock and unlock, atomic operation
+  * Problem is, atomic holds the bus
+- Spin lock allows you to lock onto address, exclusive read & write
+- Power saving instructions, wait for event
+
+Case study III
+- LPC2378
+- On initialization defaults to only some peripherals on
+- Power setting controlled by PCONP register
+
+Architectures
+- Dynamic Frequency Scaling (DFS)
+- Dynamic Voltage & Frequency Scaling (DVFS)
+- Adavtive Voltage Scaling (AVS)
+- Big and Little Cores
+  * Extend the standard power curve
+  * two types of performance
+  * same ISA
+
+Advanced Configuration and Power Interface (ACPI)
+- G0, G1, G2, G3 - S1-4
+
+Bettery tech
+- Different tech has different operating characteristics
+- sudden decline of power
+- Prices dropping , when goes below $100 per kWH then evs on par to gas car equivalents
+
+Reliability
+"intellectuals solve problems, geniuses prevent them" - Albert Einstein 
+Case study - UART Corruption
+- Problem occurs from jtag download
+- Forensic understanding
+- Corruption occurs on both UART0 and UART1
+  * 0 and 1 appear quite different
+- intermittent, every 5-80 interrupts
+- inserting code doesn't appear to effect corruption
+  * nor does reordering the code
+- output corruption doesn't adversely effect the working code
+- corruption is more frequent when timer0, timer2 and timer3 are enabled
+
+- thermal? reproducible?
+- change peripherals, move code, look at waiting on bit 5 or 6
+	* 5 holding register empty, 6 transmitter empty
+- doesn't help, nothing to do with thermals
+- rev C worked fine until the board reset (initialization issues)
+
+- start to think -> don't think too hard and go to mythical
+  * start working the problem
+  * start graphing everything
+
+- solution was to reset the interrupt interrupt controller before initializing the PLL
+
+Why was this the solution?
+

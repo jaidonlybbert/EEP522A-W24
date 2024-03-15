@@ -1,0 +1,280 @@
+MQTT, FlaskRESTful
+Fortinet OT Environments w/ Fortigate
+Raspberry pi volumetric display
+$10 Raspberry Pi 5 PCIe HAT adds WiFi 7 or M.2 modules
+
+Creativity
+- Exploratory 97%
+- Combination 2%
+- Transformation <1%
+
+Hindenbug
+- catastrophic bug that destroys data, shuts down system, or causes major problems
+- major bug that does more than just create a nuisance or an annoyance for users
+- e.g. Apollo 13 accident
+
+Case study 1: Curiosity Rover
+- Included a redundant computer system
+- JPL sent an uplink command to: swap between side-A to side-B computer system
+- Swap was completed by Sol 223, 23 days after fault detected
+  + B connected to different cameras
+- Curiosity has operated on side-B ever since
+- Mars autonomous hazard-finding model had to be retrained with other cameras
+- Curiosity still operating after 11 years, 196 days later
+
+Low-level boot process
+- Stabilize external pins
+- Initial memory settings
+- Setup system stack
+- Set phase lock loop
+- Setup exceptions and interrupts
+- move data regions
+- Call C main()
+
+What is Functional Safety? (FuSa)
+- Part of overall safety
+- Depends on automatic system
+- Guided by international standards and regulations
+
+SEooC
+- Safety element out of Context
+- The method for using components in a vehicle that were not originally designed for that project
+
+Case study 2: Forensic Fault Analysis
+- Collect data, identification, isolation and theory, corrective strategy
+- How is bug manifesting itself? - data corruption
+- Make data struct const and force the struct to reside in FlashROM
+- Creates new problem: pre-fetch abort, fatal error unknown input format
+- Peripheral bus setting output is corrupted, moving data to FlashROM creates new anomaly, 
+  - anomoly changes when location of data in RAM moves
+- Something is over writing data in RAM
+  - Something could be software or hardware
+  - shifting data causes different problem
+- Never solved it
+
+Course status:
+- Safety Critical Part 2
+- Presentation, 10 minutes, PowerPoint or other, brief description, 
+  characterization, interesting discoveries
+
+Introduction to Probability Models 12th Edition - Sheldon M. Ross
+
+Introduction:
+- Occam's Razor: simplest solution is best
+
+Reliabiility:
+- Why did someting fail?
+- when is it likely to fail
+- how do we make it resilient
+- how do we designe out weaknesses
+- how do we know it failed
+- what do we do when failure occurs?
+
+Relationship between safety critical and reliaility
+- Risk is any event or condition deemed undeserible
+- Safe system: perfect world is free from risk
+- Risk = probability of failure x severity
+
+How to make embedded softwre reliable?
+- Temperature ranges
+- Humidity
+- Altitude
+- Power
+- Environmental Chambers
+
+Embedded / Real time 
+- Run for considerably longer periods of time 
+- Software relies on the hardware being operational
+- all errors have to be handled by software
+- simpler to characterize
+- Reliability is a function of testing
+- Guaranteed reliability is a funciton of longevity testing
+
+Bathtub curve, lifecycle
+Component failure
+- Components don't fail quicly
+- difficult to detect
+mechanism
+- components start acting strangely a long time before failure
+- software has to determine when a component isn't operating within expected tolerances
+challenge
+- establish the environment that satisfies the requirements
+
+What can stress the raspberry pi?
+
+What is multi-objective?
+
+Defining reliability
+Software reliability
+- Probability of failutre free operation for specific period of 19:10
+- differes from hardware reliability
+issues
+- still curde techniquew
+
+Reliability terms
+- SLOC
+- MTTF
+- MTTR
+- MTBF
+- Availability
+
+Source Lines of Code (SLOC)
+- physical, or logical
+- simply counting lines in a system
+- easy to implement
+- doesn't include run-time complexity, LOC depends on programming language, SLOC requires strict definition
+
+Change in SLOC between Microsoft Windows NT 3.5 to Windows Vista
+
+Mean Time to Failure (MTTF)
+- Expected time until failure
+- Failure is defined as the failure to cmplete specific operation
+- Reliability 2 types
+  - repeatable faults
+  - intermittent faults
+- Design is incorrect
+- Lack of software to accommodate and isolate hardware failures
+
+Mean Time to Repair
+- average time to repair system from a failure
+- detect, locate, repair, reconfigure
+
+Mean Time Between Failures
+- MTBF = MTTF + MTTR
+
+Availability
+= MTTF / (MTTF + MTTR)
+
+Software fault tolerance
+- Error detection
+- Error correction
+- Backward error correction (BEC)
+- Forward error correction (FEC)
+- Silent Errors: most dangerous
+
+Software Fault Tolerance
+- using code to improve tolerance
+- today reliable systems are moving to more commmodity hardware
+- mechanism: detect and correct, recover, prevent future errors
+- detecting: transient faults
+- software correction: error detection mechanisms, algorithm based fault tolerance
+
+Do you ever check hardware is configured correctly?
+
+Software checking:
+- Hardware verification that hardware registers have been setup as expected
+- set(), check(), diagnostic(), record changes, capture errors, log information i.e. events and actions
+- example check timer
+
+Reliability theory:
+- Series, a system will function if all components function
+- parallel, system will function is any componenets function
+
+Testing exceptions:
+- Kernel system call
+- Tracing
+- breakpoint
+- overflow
+- fp anamaly
+- page fault
+- misaligned memory accesses
+- memory protection violation
+- undefined instrucitions
+
+Hardware malfunctions, power failure, io-request
+
+Interrupt handling
+- Reliability issues
+  - unexpected interrupts not handled
+  - missing critical interupps
+  - overhead
+  - complexity
+
+Single interrupt source
+  - interrupt source
+  - intermittent frequency
+  - each interrupt is serviced with dt 
+
+pressure when interrupt latency is long, can't service interrupts
+- could move to polling
+- introduce interrupt service thread
+
+Interrupt handling schemes
+- Non-nexted
+  - simple, high safety critical, real time response is poort
+- Nested interrupt handler
+  - complexity medium, safety critical is low, real time response is poor no priority levels
+- Re-entrant interrupt handler
+- Prioritized simple interrupt handler
+- Prioritized standard interrupt handler
+- Prioritized direct interrupt handler
+- Prioritized group interrupt handler
+- vectored interrupt handler
+  - complexity level low
+  - safety critical medium
+  - real time response is very good
+- Non-maskable interrupts
+  + interrupt you cannot stop from occuring
+  + used for very critical pieces
+- Deadlock
+  + A set of threads are in deadlock if each thread is waiting for an event 
+    the other threads can produce
+  + Mutual exclusion conditions
+  + Hold and wait
+  + No preemption
+  + Circular wait
+  + Ostrich algorithm, ignore deadlocks
+  + Detection and recovery, detect them and take action
+  + Dynamic avoidance, careful resource allocation
+  + Prevention, remove one of the four conditions necessary to cause a deadlocl
+- Priority inversion
+  + low priority opens resource, high priority interrupts gets stuck, 
+    low priority closes before high can be serviced
+- Final thoughts
+  + why something fails is interesting
+  + determeing when and measuring if it is reliable is complicated
+  + complexity and reliability are linked
+  + measurements are crude
+  + reliability is a function of testing
+  + investigating and determinging cause of unreliability is detective work
+
+Safety-critical II
+Definition: a system whose failure or malfunction may resul tin dath or serious injury to people, equipment or environment
+- JPL coding standard, Misra C
+- Safety critical is all about making something safer
+- unsafe may cause harm, and have legal ramifications
+- sensors sense the world but more importantly actuators affect works
+- how to asses if safe?
+- how to make sure safe?
+- what are guidelines?
+- is safety critical systems more important?
+- what are the wider ramifications for safety critical systems?
+
+Safety critical
+- study of failure
+- most accidents thought to be referred to as human error, but most accidents are actually due to design errors
+
+What does safety critical involve?
+- honesty
+- studying failure and determinnig how to hande errors
+- assessing and analyzing threats
+- legal implications
+- procedures and regulations
+
+Safety factor
+- engineering safety by increasing safety factor
+- safety factor is method of making an object n times safer
+- perceiving future problems, robust to cope with future problems, pruning problem space to manageable level
+- redundancy, simple and careful design, testing, learning, knowledge and improvment
+Studying errors
+- Errors in hardware
+- ability to halt system safely without causing harm
+- errors using wrong variable type
+- errors in floating point: different implementation
+What is reliability? consistency over time, how well lives up to expecations of 20:25
+Security, integrity, vulnerability, threat
+
+Threat analysis?
+- Hardware, software, physical site, network
+- Vulnerabilities in linux?
+  + Complexity

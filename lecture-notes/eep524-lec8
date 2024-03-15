@@ -1,0 +1,189 @@
+complexity harms safety-critical
+Byzantine generals problem
+Voting systems
+Data integrity
+- Stack checking
+- Making stack safe, corruption is common problem
+	+ High tide watermark, stack limit, safety buffer (both sides)
+	+ Use scheduler to check stack pointer is within bounds
+Interrupts
+	+ Should they be used in safety critical?
+		+ No, use polling, interrupts impose test burden, unpredictable
+	+ Should safety critcial use dynamic memory?
+JPL rules
+1. don't use task delays for thread synchronization
+2. restrictions on the use of semaphores and locks
+3. do not use goto, setjmp or longjmp
+Defensive code writing
+Code clarity
+Issues with runtime error correction
+Error correcting codes
++ ECC error correcting memory
+Watchdog timer
++ can send intterupt or reset system when not responding
+Autonomous driving
++ sensor-actuator logic
++ complex journey
++ overalll safety is responsivility of technology integrator -> someone to blame legally
++ dangerous time when mixture of autonomous technologies and human control exist
++ as systems become more complex there is a need to determine "Human Intent"
+	+ understanding what a human is likely to do 
+	+ will the human cross the road?, have they fallen asleep?
+	+ important if human is emergency control system
++ non-invasive BCI may be solution to some problems
++ majority of austraillia accidents was low blood sugar
+Human intent graph w/ automation
+Case study: safety standard DO-178
++ Embedded / RTOS have been certified with safety level, uCOS, VXWorks
++ DO-178 defines guidelines for aviation software
+	+ certification levels, A-E
+Final thoughts
+
+Simulation/Emulaiton
+"A simulation is the answer to the quiestion, 'what-if'" - Richard W. Hamming
++ testing on real hardware is expensive
++ SnE gives embed eng. chance to see in future
++ takes time, can provide misleading info, difficult to get accurate measurements, no causal effects
++ simulation merging with vr/ar + growing popularity with webassembly
+FirePOWER
++ Steve Jobs
++ Tasked with breaking things
++ exploding whale video
++ hardware couldn't reach the end of video
+	+ hardware engineers went to simulator
+Resources
++ spice, qemu, computer related risks - Peter G Neumann
++ RTL, game emulation, flight simulator, wind tunnel, wave simulator, weather simulator, earth simulator
+Introduction
+
+Accuracy
++ How close a quantity is to its actual value
++ how close simulator is to hardware
++ accuracy comes at cost of speed, cost
+
+Why could simulation be useful for machine learning?
++ Digital twin - train the model in the simulator
+
+Emulation
++ replacement for a system
++ e.g. emulation of SoC
++ behaviorally correct
+
+simulaiton
++ models as actual device
++ analyze and make predictions
++ processor behavio at each stage of the pipeline
++ simulation attempts to reproduce a processors behavior
++ compiile/build enviroment, prototype, optimization, scheduling sequence, cache corner cases
++ advantages
+	+ find problems before they occur
+	+ start porting software prior to availability
+	+ act as known base device
+	+ useful when prototype hardware is limited
+	+ safe environment to develop software
+	+ useful with hardware limited
++ technologies
+	+ SoCs/processorc executing RTL
+	+ dedicated hardware
+	+ CADENCE Palladium
++ software
+	+ eumulates programming env
+	+ runs on gnu/linux, windows
+	+ low cost
+	+ might be faster than hardware
+	+ not timing accurate
+	+ gdb has builtin simulator
++ soft emulators
+QEMU
+- open source software emulator
+- mips, powerpc, sh4, arm, ....
+- executes oses and programs
+- binary translation or native execution
+Microsoft Device Emulator
+
+Architecture vs Microarchitecture
+
+Gem5
+- simulator
+- modular platform
+- system-level architecture
+- processor architecture
+
+How useful would emulator have been for your assignments?
+
+SPICE
+- simulation program with integrated circuit emphasis
+- board level design
+- passing fcc emission
+
+Gazebo
+- used for ROS
+
+CARLA
+- autonomous cars
+
+Most basic emulation
+- API emulation
+
+Models
+- representation of reality used to simulate
+project lifecycle
+- validataion
+
+Modeling event difficulty
+- problem not predicting the future
+- astronauts in simulation test attempted to abort, astronauts tried aborting the abort
+- simulation went into a continuous loop
+- nobody anticipated someone would abort twice
+Simulation failure
+- solution only as good as simulator
+- lossing america's cup racing boat victimized by computer modelling
+- iterations on improved designs gave worse results
+Co-design / co-engineering
+- co-design hardware and software designed together
+- goal is to produce the most optimal design
+- heavy use of simulation tech
+- difficult to achieve
+Virtual machines
+- machine completely defined and implemented in software
+- runtime environment
+- compiled code called intermediate language
+- mimics real processor
+- issues
+	+ determinism, have gbc
+
+Darpa event
+- for funding
+- emerging threats
+	- energy, power plants, grid infrastructure
+- should be well employed
+	- aging population, africa has younger population
+
+renesas develops ai accelerator for lightweight ai models
+Rust embedded-hal crate
+Milk-V DUO S - $11
+
+Space ROS, Astrobee
+
+Curiosity Rover
+- Sleeping
+	+ normal sleep watchdog timer wakes it up
+	+ failsafe, comms remain powered alow orbiter to wake-up rover
+- memory corruption
+	+ tlelmetry data showed problem in flash memory
+	+ caused sotware tasks to hang
+	wouldnt' sleep
+	+ watchdog timers didn't trigger
+	+ from earth, and comms lost, couldn't come back
+	+ switched over to side-B computer
+	+ identified single bad flash chip on side-A
+
+MMRTG characteristics
+- loses 1 watt per 80 days
+
+Assignment 3 hard deadline 13th
+Presentations via Zoom
+
+superintlligence - bad, homo deus - good, scale Geoffrey West- how things change with scale, the book of why - Judea Pearl: AI cuase and effect, the art of strategy - good about strategists
+human compatible - how we control dumb ai, crude look at the whole - complexities
+
