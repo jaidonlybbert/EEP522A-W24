@@ -25,7 +25,7 @@
 
 % Abstract section
 \begin{abstract}
-	In this article a network of distributed acoustic sensing nodes is used to localize a sound signature using a time-difference-of-arrival (TDoA) algorithm. Accurate wall-clock times are obtained by GPS at each node, and a frame of acoustic data is recorded through a microphone on each node. Time differences are determined by correlation, and the resulting system of equations solved by the Chan-Ho algorithm to determine location. In a concurrent process, each node performs classification inference on a data frame using a pre-trained convolutional neural network (CNN). The resulting class identification is used to assign a process model to the tracked object for use in an Extended Kalman Filter (EKF) applied to the Chan-Ho localization result to make the final estimate of object position and trajectory.
+	In this article a network of distributed acoustic sensing nodes is used to localize a sound signature using a time-difference-of-arrival (TDoA) algorithm \cite{CobosMaximo2020FGCA}. Accurate wall-clock times are obtained by GPS at each node, and a frame of acoustic data is recorded through a microphone on each node. Time differences are determined by correlation, and the resulting system of equations solved by the Chan-Ho \cite{ChanY.T.1994Asae} algorithm to determine location. In a concurrent process, each node performs classification inference on a data frame using a pre-trained convolutional neural network (CNN).
 \end{abstract}
 
 
@@ -45,17 +45,18 @@ My project seeks to localize detected birds with precision in the range of less 
 \subsection{Environment Setup}
 
 	My project consists of the following hardware:
-\lstlisting{}
-\item{Raspberry Pi 4B}
-\item{Adafruit Feather Huzzah (ESP8266)}
-\item{Adafruit Ultimate USB GPS breakout board}
-\item{Breadboard}
-\item{Jumper wires}
-\item{Elegoo 3.3V breadboard power supply}
-\item{2 x 100kOhm resistors}
-\item{1 x 0.1uF capacitor}
-\item{1 x 220Ohm resistor}
-\item{1 x 3.3V electret microphone module}
+\begin{itemize}
+\item Raspberry Pi 4B
+\item Adafruit Feather Huzzah (ESP8266)
+\item Adafruit Ultimate USB GPS breakout board
+\item Breadboard
+\item Jumper wires
+\item Elegoo 3.3V breadboard power supply
+\item2 x 100kOhm resistors
+\item1 x 0.1uF capacitor
+\item1 x 220Ohm resistor
+\item1 x 3.3V electret microphone module
+\end{itemize}
 	
 
 \subsection{Data Collection}
